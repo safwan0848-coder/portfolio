@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abdulla Safwan K | Python Developer</title>
+
+    <!-- Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- PREMIUM CINEMATIC PRELOADER -->
+    <div id="boot-screen">
+        <div class="boot-content">
+            <div class="loading-text">LOADING...</div>
+
+            <!-- Exact Python Logo SVG (Split Logic) -->
+            <svg class="python-logo" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Top Snake (Blue) -->
+                <path id="snake-top"
+                    d="M55 2.5C28.5 2.5 27 14 27 14H54.5V20H15.5C8 20 2.5 25.5 2.5 33V49C2.5 56.5 7.5 59.5 13 59.5H36.5V53C36.5 44 42 38.5 51 38.5H74C82 38.5 83.5 30.5 83.5 26.5V14C83.5 5.5 76 -2.38419e-07 55 -2.38419e-07V2.5ZM39.5 7C41.5 7 43 8.5 43 10.5C43 12.5 41.5 14 39.5 14C37.5 14 36 12.5 36 10.5C36 8.5 37.5 7 39.5 7Z"
+                    fill="#3776AB" />
+
+                <!-- Bottom Snake (Yellow) -->
+                <path id="snake-bottom"
+                    d="M55 107.5C81.5 107.5 83 96 83 96H55.5V90H94.5C102 90 107.5 84.5 107.5 77V61C107.5 53.5 102.5 50.5 97 50.5H73.5V57C73.5 66 68 71.5 59 71.5H36C28 71.5 26.5 79.5 26.5 83.5V96C26.5 104.5 34 110 55 110V107.5ZM70.5 103C68.5 103 67 101.5 67 99.5C67 97.5 68.5 96 70.5 96C72.5 96 74 97.5 74 99.5C74 101.5 72.5 103 70.5 103Z"
+                    fill="#FFD43B" />
+            </svg>
+
+            <div class="loader-container">
+                <div class="progress-track">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="loader-meta">
+                    <span class="status-text">Initializing System...</span>
+                    <span class="percent-text">0%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script>gsap.registerPlugin(TextPlugin, ScrollTrigger);</script>
+    <script src="js/preloader.js"></script>
+
+    <!-- Invisible SVG Filters for Jelly Effect -->
+    <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1"
+        xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <filter id="jelly-distortion">
+                <feTurbulence type="fractalNoise" baseFrequency="0.01 0.01" numOctaves="2" result="warp" />
+                <feDisplacementMap xChannelSelector="R" yChannelSelector="G" scale="0" in="SourceGraphic" in2="warp" />
+            </filter>
+        </defs>
+    </svg>
+
+    <canvas id="bg-canvas"></canvas>
+    <div class="scanline"></div>
+    <div id="cursor"></div>
+    <div id="cursor-follower"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-[100] px-6 lg:px-12 py-6 flex justify-between items-center">
+        <div class="flex items-center gap-4">
+            <div
+                class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 text-white rounded-xl flex items-center justify-center font-black shadow-lg shadow-blue-500/50">
+                A</div>
+            <div class="hidden sm:block">
+                <span class="block text-xs font-black tracking-tighter uppercase name-highlight">Abdulla Safwan K</span>
+                <span class="block text-[8px] mono text-blue-500 uppercase tracking-widest">Python Developer</span>
+            </div>
+        </div>
+
+        <div class="hidden md:flex items-center gap-12">
+            <a href="#hero"
+                class="text-[10px] font-black uppercase tracking-[0.2em] hover:text-blue-500 transition-all duration-300">Entry</a>
+            <a href="#about"
+                class="text-[10px] font-black uppercase tracking-[0.2em] hover:text-blue-500 transition-all duration-300">Core</a>
+            <a href="#work"
+                class="text-[10px] font-black uppercase tracking-[0.2em] hover:text-blue-500 transition-all duration-300">Vault</a>
+            <a href="#contact"
+                class="text-[10px] font-black uppercase tracking-[0.2em] hover:text-blue-500 transition-all duration-300">Sync</a>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <span id="live-clock" class="mono text-[10px] text-zinc-500 mr-4">00:00:00</span>
+            <a href="mailto:safwan0848@gmail.com"
+                class="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-[10px] font-black rounded-full hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300 glow-button">CONNECT</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="min-h-screen flex flex-col justify-center items-center px-6 pt-20">
+        <div class="max-w-6xl w-full">
+
+
+
+            <div data-aos="zoom-in" class="terminal-window w-full mb-16 overflow-hidden">
+                <div class="bg-white/5 px-6 py-4 flex justify-between items-center border-b border-white/5">
+                    <div class="flex gap-2">
+                        <div class="w-3 h-3 rounded-full bg-red-500/70 shadow-lg shadow-red-500/50"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500/70 shadow-lg shadow-yellow-500/50"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500/70 shadow-lg shadow-green-500/50"></div>
+                    </div>
+                    <span class="mono text-[10px] text-zinc-500 uppercase tracking-widest">safwan.profile.init()</span>
+                </div>
+                <div class="p-10 mono text-sm md:text-lg space-y-4">
+                    <div class="text-blue-500 font-bold">>>> Building high-availability systems...</div>
+                    <div class="text-zinc-400">
+                        const <span class="text-white">developer</span> = "<span
+                            class="text-white font-bold underline decoration-blue-500 underline-offset-4">Abdulla Safwan
+                            K</span>";<br>
+                        const <span class="text-white">skills</span> = ["<span class="text-emerald-400">Python</span>",
+                        "<span class="text-emerald-400">Django</span>", "<span "<span class="
+                            text-emerald-400">ORM</span>",
+                        "<span class="text-emerald-400">MongoDB</span>", "<span class="text-emerald-400">React</span>"];
+                    </div>
+                    <div class="text-white pt-4">
+                        <span class="text-zinc-600">safwan@system:~$</span> <span class="animate-pulse">_</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <h2 class="mono text-xs text-blue-500 mb-6 tracking-[0.5em] uppercase font-bold" data-aos="fade-down">
+                    Now Engineering the Future</h2>
+                <h1 class="text-7xl md:text-[140px] font-black tracking-tighter leading-[0.85] mb-12 uppercase italic">
+                    <span class="name-highlight">ABDULLA</span><br>
+                    <span class="gradient-text">SAFWAN K</span>
+                </h1>
+                <p class="text-zinc-500 mono text-sm mb-12 tracking-widest uppercase" data-aos="fade-up">Python
+                    Developer // Backend Specialist</p>
+                <div class="flex flex-wrap justify-center gap-6" data-aos="fade-up" data-aos-delay="200">
+                    <button onclick="document.getElementById('work').scrollIntoView({behavior: 'smooth'})"
+                        class="px-12 py-6 bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl font-black text-sm hover:scale-105 transition-all duration-300 shadow-2xl shadow-blue-500/40 uppercase glow-button">View
+                        Projects</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Professional Skills Bento -->
+    <section id="about" class="py-32 px-6 lg:px-12 relative">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-6">
+
+            <div data-aos="fade-up" class="md:col-span-8 bento-card flex flex-col justify-between min-h-[450px]">
+                <div>
+                    <span
+                        class="mono text-xs text-blue-500 mb-6 block tracking-[0.3em] uppercase font-bold">/Executive_Summary</span>
+                    <h2 class="text-5xl font-black mb-8 italic tracking-tighter leading-tight uppercase">Engineering
+                        scalable<br>solutions.</h2>
+                    <p class="text-zinc-400 text-xl leading-relaxed max-w-2xl">
+                        I’m <span class="text-white font-bold">Safwan</span>, and I’m from Malappuram. I completed my
+                        Higher Secondary Education in Bio Science, where I developed an interest in technology and
+                        problem-solving. Currently, I’m learning Python development at <span
+                            class="text-white font-bold">Brototype</span>, focusing on building real-world projects and
+                        improving my coding and logical thinking skills. Through this program, I’m gaining practical
+                        experience in programming, web development, and software design. My goal is to become a skilled
+                        full-stack developer who can create useful, user-friendly, and scalable applications. Apart from
+                        coding, I enjoy learning new technologies, exploring creative ideas, and collaborating with
+                        others to solve challenges.
+                    </p>
+                </div>
+                <!-- Enhanced Skills Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
+                    <!-- Python -->
+                    <div
+                        class="p-4 rounded-2xl border border-white/5 bg-white/5 hover:bg-gradient-to-br hover:from-blue-500/10 hover:to-purple-500/10 transition-all duration-300 group">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i
+                                class="bi bi-filetype-py text-2xl text-blue-500 group-hover:scale-110 transition-transform duration-300"></i>
+                            <span class="font-bold text-sm">Python</span>
+                        </div>
+                        <p class="text-[10px] text-zinc-400 leading-relaxed">High-level programming for scalable backend
+                            logic and data processing.</p>
+                    </div>
+                    <!-- Django -->
+                    <div
+                        class="p-4 rounded-2xl border border-white/5 bg-white/5 hover:bg-gradient-to-br hover:from-green-500/10 hover:to-blue-500/10 transition-all duration-300 group">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i
+                                class="bi bi-gear-wide-connected text-2xl text-green-500 group-hover:scale-110 transition-transform duration-300"></i>
+                            <span class="font-bold text-sm">Django</span>
+                        </div>
+                        <p class="text-[10px] text-zinc-400 leading-relaxed">Robust web framework for secure,
+                            maintainable, and rapid application development.</p>
+                    </div>
+                    <!-- React -->
+                    <div
+                        class="p-4 rounded-2xl border border-white/5 bg-white/5 hover:bg-gradient-to-br hover:from-cyan-500/10 hover:to-blue-500/10 transition-all duration-300 group">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i
+                                class="bi bi-filetype-jsx text-2xl text-cyan-400 group-hover:scale-110 transition-transform duration-300"></i>
+                            <span class="font-bold text-sm">React</span>
+                        </div>
+                        <p class="text-[10px] text-zinc-400 leading-relaxed">Component-based library for building
+                            dynamic and interactive user interfaces.</p>
+                    </div>
+                    <!-- PostgreSQL -->
+                    <div
+                        class="p-4 rounded-2xl border border-white/5 bg-white/5 hover:bg-gradient-to-br hover:from-blue-400/10 hover:to-purple-400/10 transition-all duration-300 group">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i
+                                class="bi bi-database text-2xl text-blue-300 group-hover:scale-110 transition-transform duration-300"></i>
+                            <span class="font-bold text-sm">PostgreSQL</span>
+                        </div>
+                        <p class="text-[10px] text-zinc-400 leading-relaxed">Advanced open-source relational database
+                            for reliability and data integrity.</p>
+                    </div>
+                    <!-- MongoDB -->
+                    <div
+                        class="p-4 rounded-2xl border border-white/5 bg-white/5 hover:bg-gradient-to-br hover:from-green-400/10 hover:to-blue-400/10 transition-all duration-300 group">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i
+                                class="bi bi-database-fill text-2xl text-green-400 group-hover:scale-110 transition-transform duration-300"></i>
+                            <span class="font-bold text-sm">MongoDB</span>
+                        </div>
+                        <p class="text-[10px] text-zinc-400 leading-relaxed">NoSQL database for flexible, high-volume
+                            data storage and retrieval.</p>
+                    </div>
+                    <!-- ORM -->
+                    <div
+                        class="p-4 rounded-2xl border border-white/5 bg-white/5 hover:bg-gradient-to-br hover:from-purple-400/10 hover:to-pink-400/10 transition-all duration-300 group">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i
+                                class="bi bi-braces text-2xl text-purple-400 group-hover:scale-110 transition-transform duration-300"></i>
+                            <span class="font-bold text-sm">ORM</span>
+                        </div>
+                        <p class="text-[10px] text-zinc-400 leading-relaxed">Object-Relational Mapping for efficient and
+                            secure database interactions.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Personal Info Card -->
+            <div data-aos="fade-up" data-aos-delay="100" class="md:col-span-4 bento-card flex flex-col justify-between">
+                <div>
+                    <span
+                        class="mono text-xs text-blue-500 mb-6 block tracking-[0.3em] uppercase font-bold">/User_Config</span>
+                    <ul class="space-y-4 mono text-xs text-zinc-400">
+                        <li
+                            class="flex justify-between border-b border-white/5 pb-2 hover:border-blue-500/30 transition-colors duration-300">
+                            <span>AGE</span> <span class="text-white">18</span>
+                        </li>
+                        <li
+                            class="flex justify-between border-b border-white/5 pb-2 hover:border-blue-500/30 transition-colors duration-300">
+                            <span>CITY</span> <span class="text-white">Kerala, India</span>
+                        </li>
+                        <li
+                            class="flex justify-between border-b border-white/5 pb-2 hover:border-blue-500/30 transition-colors duration-300">
+                            <span>PHONE</span> <span class="text-white">+91 9037769800</span>
+                        </li>
+                        <li
+                            class="flex justify-between border-b border-white/5 pb-2 hover:border-blue-500/30 transition-colors duration-300">
+                            <span>EMAIL</span> <span class="text-white">safwan0848@gmail.com</span>
+                        </li>
+                        <li
+                            class="flex justify-between border-b border-white/5 pb-2 hover:border-blue-500/30 transition-colors duration-300">
+                            <span>FREELANCE</span> <span class="text-emerald-400">Available</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="mt-8">
+                    <span class="block text-[10px] mono text-zinc-600 mb-2">LAST_UPDATE: 15 OCT 2007</span>
+                    <div class="h-1 w-full bg-zinc-800 rounded-full overflow-hidden">
+                        <div
+                            class="h-full bg-gradient-to-r from-blue-500 to-purple-500 w-[85%] shadow-lg shadow-blue-500/50">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Photo Card -->
+            <div data-aos="fade-up" class="md:col-span-4 bento-card relative overflow-hidden group min-h-[400px]">
+                <img id="profile-img" src="profile.jpeg" alt="Abdulla Safwan K"
+                    class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100">
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-8 flex flex-col justify-end">
+                    <div class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        <h3 class="text-3xl font-black uppercase italic leading-none text-white mb-2">Abdulla<br>Safwan
+                            K</h3>
+                        <p class="text-zinc-400 text-xs mono tracking-widest uppercase">Python Developer // Backend
+                            Developer</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resume / Trajectory -->
+            <div data-aos="fade-up" class="md:col-span-8 bento-card">
+                <span
+                    class="mono text-xs text-blue-500 mb-6 block tracking-[0.3em] uppercase font-bold">/System_Logs</span>
+                <h3 class="text-3xl font-black mb-8 uppercase italic">Trajectory.</h3>
+
+                <div class="space-y-8">
+                    <!-- Brototype -->
+                    <div
+                        class="relative pl-8 border-l-2 border-blue-500/30 hover:border-blue-500 transition-colors duration-300">
+                        <div
+                            class="absolute -left-[6px] top-0 w-3 h-3 bg-blue-500 rounded-full shadow-lg shadow-blue-500/50">
+                        </div>
+                        <div class="mb-2 flex flex-col sm:flex-row sm:items-center justify-between">
+                            <h4 class="text-xl font-bold">Student at Brototype</h4>
+                            <span
+                                class="mono text-[10px] text-zinc-500 bg-blue-500/10 px-3 py-1 rounded-lg border border-blue-500/20">2025
+                                - PRESENT</span>
+                        </div>
+                        <p class="text-sm text-zinc-400 mb-4">Calicut, Kerala</p>
+                        <ul class="list-disc leading-relaxed text-sm text-zinc-500 space-y-2 pl-4">
+                            <li>Undertaking intensive Python development program.</li>
+                            <li>Building full-stack expertise with HTML, CSS, Bootstrap, JS.</li>
+                            <li>Strengthening logic and problem-solving skills.</li>
+                            <li>Managing projects with Git/GitHub.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Plus Two -->
+                    <div
+                        class="relative pl-8 border-l-2 border-zinc-800/30 hover:border-zinc-500 transition-colors duration-300">
+                        <div
+                            class="absolute -left-[6px] top-0 w-3 h-3 bg-zinc-600 rounded-full shadow-lg shadow-zinc-500/30">
+                        </div>
+                        <div class="mb-2 flex flex-col sm:flex-row sm:items-center justify-between">
+                            <h4 class="text-xl font-bold">Plus-Two Bio Science</h4>
+                            <span
+                                class="mono text-[10px] text-zinc-500 bg-white/5 px-3 py-1 rounded-lg border border-white/10">2023
+                                - 2025</span>
+                        </div>
+                        <p class="text-sm text-zinc-400 mb-4">DUHSS Thootha</p>
+                        <p class="text-sm text-zinc-500">
+                            Developed scientific mindset and analytical skills. Improved problem-solving ability in
+                            biology, chemistry, and physics.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Section - WORKING VERSION -->
+            <div data-aos="fade-up" class="md:col-span-12 bento-card flex flex-col lg:flex-row gap-12">
+                <div class="lg:w-1/2">
+                    <h3 class="text-4xl font-black tracking-tighter mb-6 italic uppercase gradient-text">Binary
+                        Knowledge Base.</h3>
+                    <p class="text-zinc-500 text-sm mb-12">Query my technical history. My agent is trained on my
+                        specific implementation of Pythonic patterns and React component lifecycles.</p>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div
+                            class="p-6 bg-gradient-to-br from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-3xl text-center hover:scale-105 transition-transform duration-300">
+                            <span class="block text-2xl font-black text-blue-500">OPTIMIZED</span>
+                            <span class="text-[10px] mono text-zinc-500 uppercase font-bold">PostgreSQL Queries</span>
+                        </div>
+                        <div
+                            class="p-6 bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-500/20 rounded-3xl text-center hover:scale-105 transition-transform duration-300">
+                            <span class="block text-2xl font-black text-purple-500">SCALABLE</span>
+                            <span class="text-[10px] mono text-zinc-500 uppercase font-bold">Django Architectures</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="lg:w-1/2 bg-black/50 rounded-3xl border border-blue-500/20 flex flex-col overflow-hidden shadow-2xl shadow-blue-500/10">
+                    <div id="ai-chat" class="flex-grow p-8 overflow-y-auto space-y-6 mono text-sm h-[350px]">
+                        <div
+                            class="text-blue-500 bg-blue-500/10 p-4 rounded-2xl border border-blue-500/20 chat-message">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="bi bi-robot text-lg"></i>
+                                <span class="font-bold text-xs uppercase tracking-wider">SAF_AGENT</span>
+                            </div>
+                            [SYSTEM_BOOT_SUCCESS] Hello, I am Abdulla Safwan's virtual agent. Ask me anything about my
+                            world-class engineering workflows.
+                        </div>
+                    </div>
+                    <div id="typing-ui"
+                        class="hidden px-8 py-3 text-[10px] mono text-blue-500 bg-blue-500/5 border-t border-blue-500/20">
+                        <div class="flex items-center gap-2">
+                            <div class="typing-indicator">ANALYZING CODEBASE</div>
+                            <div class="flex gap-1">
+                                <span class="animate-bounce" style="animation-delay: 0s">.</span>
+                                <span class="animate-bounce" style="animation-delay: 0.2s">.</span>
+                                <span class="animate-bounce" style="animation-delay: 0.4s">.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="p-6 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border-t border-blue-500/20 flex gap-4">
+                        <input type="text" id="ai-input" placeholder="Ask about PostgreSQL/React workflows..."
+                            class="bg-black/50 border border-blue-500/20 rounded-xl px-4 outline-none flex-grow mono text-xs text-white focus:border-blue-500/50 transition-colors duration-300">
+                        <button onclick="runAI()"
+                            class="bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-3 rounded-xl text-[10px] font-black uppercase hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300 glow-button">Execute</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="work" class="py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-24 text-center md:text-left">
+                <span
+                    class="mono text-xs text-blue-500 mb-4 block tracking-[0.5em] uppercase font-bold">/Featured_Deployments</span>
+                <h2
+                    class="text-6xl md:text-[120px] font-black tracking-tighter leading-none italic uppercase opacity-20">
+                    Portfolio.</h2>
+                <p class="text-zinc-500 mt-4 max-w-2xl px-1">
+                    Explore my work in developing robust web solutions. Each project reflects my dedication to quality,
+                    creativity, and effective problem-solving.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <!-- Shoezo -->
+                <div data-aos="fade-up" class="group relative project-card-wrapper">
+                    <div class="bento-card project-card overflow-hidden h-full flex flex-col p-0 relative">
+                        <div class="project-curtain absolute inset-0 bg-black z-20 pointer-events-none"></div>
+                        <div class="h-56 relative overflow-hidden group-hover:opacity-100 transition-all">
+                            <img src="shoezo.png" alt="Shoezo E-commerce"
+                                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                        </div>
+                        <div class="p-8 flex flex-col flex-grow">
+                            <h3
+                                class="text-2xl font-black mb-2 tracking-tighter uppercase italic text-white group-hover:text-blue-500 transition-colors">
+                                SHOEZO</h3>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="skill-tag">HTML</span>
+                                <span class="skill-tag">CSS</span>
+                                <span class="skill-tag">Bootstrap</span>
+                            </div>
+                            <p class="text-zinc-400 mb-6 text-sm leading-relaxed flex-grow">
+                                A responsive e-commerce interface designed with Bootstrap. Features a clean, grid-based
+                                layout and modern styling principles without complex state management.
+                            </p>
+                            <div class="flex gap-4 mt-auto">
+                                <a href="https://safwan0848-coder.github.io/shoezo-/" target="_blank"
+                                    class="w-full text-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-[10px] font-black rounded-xl hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300 uppercase tracking-widest glow-button">
+                                    Launch Interface
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Amazon -->
+                <div data-aos="fade-up" data-aos-delay="100" class="group relative project-card-wrapper">
+                    <div class="bento-card project-card overflow-hidden h-full flex flex-col p-0 relative">
+                        <div class="project-curtain absolute inset-0 bg-black z-20 pointer-events-none"></div>
+                        <div class="h-56 relative overflow-hidden group-hover:opacity-100 transition-all">
+                            <img src="amazon.png" alt="Amazon Clone Engine"
+                                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                        </div>
+                        <div class="p-8 flex flex-col flex-grow">
+                            <h3
+                                class="text-2xl font-black mb-2 tracking-tighter uppercase italic text-white group-hover:text-blue-500 transition-colors">
+                                Amazon Engine</h3>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="skill-tag">HTML</span>
+                                <span class="skill-tag">CSS</span>
+                                <span class="skill-tag">Static</span>
+                            </div>
+                            <p class="text-zinc-400 mb-6 text-sm leading-relaxed flex-grow">
+                                My first web design project. A static recreation of the Amazon interface using pure HTML
+                                and CSS, focusing on structure and visual accuracy.
+                            </p>
+                            <div class="flex gap-4 mt-auto">
+                                <a href="https://safwan0848-coder.github.io/Amazon-safwan/" target="_blank"
+                                    class="w-full text-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-[10px] font-black rounded-xl hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300 uppercase tracking-widest glow-button">
+                                    System Access
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Papergrid -->
+                <div data-aos="fade-up" data-aos-delay="200" class="group relative project-card-wrapper">
+                    <div class="bento-card project-card overflow-hidden h-full flex flex-col p-0 relative">
+                        <div class="project-curtain absolute inset-0 bg-black z-20 pointer-events-none"></div>
+                        <div class="h-56 relative overflow-hidden group-hover:opacity-100 transition-all">
+                            <img src="papergrid.png" alt="Papergrid System"
+                                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                        </div>
+                        <div class="p-8 flex flex-col flex-grow">
+                            <h3
+                                class="text-2xl font-black mb-2 tracking-tighter uppercase italic text-white group-hover:text-blue-500 transition-colors">
+                                Papergrid</h3>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="skill-tag">HTML</span>
+                                <span class="skill-tag">CSS</span>
+                                <span class="skill-tag">Design</span>
+                            </div>
+                            <p class="text-zinc-400 mb-6 text-sm leading-relaxed flex-grow">
+                                A static layout system focusing on information density and visual hierarchy. Built
+                                entirely with HTML and CSS to demonstrate fundamental layout alignment.
+                            </p>
+                            <div class="flex gap-4 mt-auto">
+                                <a href="https://safwan0848-coder.github.io/pepergrid/" target="_blank"
+                                    class="w-full text-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-[10px] font-black rounded-xl hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300 uppercase tracking-widest glow-button">
+                                    View Deployment
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Outfito -->
+                <div data-aos="fade-up" data-aos-delay="300" class="group relative project-card-wrapper md:col-span-2 lg:col-span-3">
+                    <div class="bento-card project-card overflow-hidden h-full flex flex-col p-0 relative">
+                        <div class="project-curtain absolute inset-0 bg-black z-20 pointer-events-none"></div>
+                        <div class="h-56 md:h-80 lg:h-[450px] relative overflow-hidden group-hover:opacity-100 transition-all">
+                            <img src="image.png" alt="Outfito Platform"
+                                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                        </div>
+                        <div class="p-8 flex flex-col flex-grow">
+                            <h3
+                                class="text-2xl font-black mb-2 tracking-tighter uppercase italic text-white group-hover:text-blue-500 transition-colors">
+                                OUTFITO</h3>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="skill-tag">Django</span>
+                                <span class="skill-tag">Python</span>
+                                <span class="skill-tag">Tailwind</span>
+                            </div>
+                            <p class="text-zinc-400 mb-6 text-sm leading-relaxed flex-grow">
+                                A premium full-stack e-commerce platform. Features seamless checkout, wallet system, order management, and a high-end UI/UX.
+                            </p>
+                            <div class="flex gap-4 mt-auto">
+                                <a href="https://outfito.site" target="_blank"
+                                    class="w-full text-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-[10px] font-black rounded-xl hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300 uppercase tracking-widest glow-button">
+                                    Launch Interface
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact"
+        class="py-32 px-6 bg-gradient-to-br from-white via-blue-50 to-purple-50 text-black text-center">
+        <div class="max-w-5xl mx-auto">
+            <h2 data-aos="fade-up"
+                class="text-7xl md:text-[100px] font-black tracking-tighter italic leading-none mb-12 uppercase bg-gradient-to-r from-black via-blue-600 to-purple-600 bg-clip-text text-transparent">
+                Establish<br>Connection.</h2>
+
+            <div class="flex flex-col lg:flex-row gap-12 justify-center items-start">
+
+                <!-- Left: Minimal Contact Info (No Location) -->
+                <div class="w-full lg:w-1/3 text-left" data-aos="fade-right">
+                    <div class="mb-8">
+                        <span
+                            class="block mono text-[10px] text-zinc-600 mb-2 uppercase tracking-widest font-black">Direct
+                            Line</span>
+                        <a href="mailto:safwan0848@gmail.com"
+                            class="text-2xl font-black text-black hover:text-blue-600 transition-colors">safwan0848@gmail.com</a>
+                    </div>
+                    <div class="mb-8">
+                        <span
+                            class="block mono text-[10px] text-zinc-600 mb-2 uppercase tracking-widest font-black">Social
+                            Nodes</span>
+                        <div class="flex gap-6 text-2xl text-black">
+                            <a href="https://github.com/safwan0848-coder"
+                                class="hover:text-blue-600 hover:scale-110 transition-transform"><i
+                                    class="bi bi-github"></i></a>
+                            <a href="https://linkedin.com/in/abdulla-safwan"
+                                class="hover:text-blue-600 hover:scale-110 transition-transform"><i
+                                    class="bi bi-linkedin"></i></a>
+                        </div>
+                    </div>
+                    <p class="text-zinc-500 text-sm leading-relaxed">
+                        Open for freelance opportunities and collaborative projects. Transmit your data packet securely
+                        using the interface.
+                    </p>
+                </div>
+
+                <!-- Right: The "Email Box" Form -->
+                <div class="w-full lg:w-2/3 bg-white shadow-2xl shadow-blue-500/10 rounded-3xl p-8 md:p-12 floating-card"
+                    data-aos="fade-left" data-aos-duration="1000">
+                    <form id="contact-form" onsubmit="handleContactForm(event)" class="space-y-6 text-left">
+                        <!-- Web3Forms Access Key -->
+                        <input type="hidden" name="access_key" value="f3da8493-dcb7-40cb-973b-dc0a14035e82">
+
+                        <!-- Optional: Bot Protection -->
+                        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div data-aos="fade-up" data-aos-delay="200">
+                                <label
+                                    class="block mono text-[10px] text-zinc-400 mb-2 uppercase tracking-widest font-bold">Identity
+                                    (Name)</label>
+                                <input type="text" name="name" id="contact-name" required
+                                    class="input-animated w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-sm text-black focus:border-blue-500 focus:bg-white outline-none">
+                            </div>
+                            <div data-aos="fade-up" data-aos-delay="300">
+                                <label
+                                    class="block mono text-[10px] text-zinc-400 mb-2 uppercase tracking-widest font-bold">Return
+                                    Address (Email)</label>
+                                <input type="email" name="email" id="contact-email" required
+                                    class="input-animated w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-sm text-black focus:border-blue-500 focus:bg-white outline-none">
+                            </div>
+                        </div>
+                        <div data-aos="fade-up" data-aos-delay="400">
+                            <label
+                                class="block mono text-[10px] text-zinc-400 mb-2 uppercase tracking-widest font-bold">Subject
+                                Header</label>
+                            <input type="text" name="subject" id="contact-subject" required
+                                class="input-animated w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-sm text-black focus:border-blue-500 focus:bg-white outline-none">
+                        </div>
+                        <div data-aos="fade-up" data-aos-delay="500">
+                            <label
+                                class="block mono text-[10px] text-zinc-400 mb-2 uppercase tracking-widest font-bold">Data
+                                Packet (Message)</label>
+                            <textarea name="message" id="contact-message" rows="5" required
+                                class="input-animated w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-sm text-black focus:border-blue-500 focus:bg-white outline-none resize-none"></textarea>
+                        </div>
+                        <button type="submit" id="submit-btn" data-aos="zoom-in" data-aos-delay="600"
+                            class="btn-pulse w-full py-4 bg-gradient-to-r from-black via-blue-900 to-black text-white text-xs font-black rounded-xl hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300 uppercase tracking-widest transform hover:scale-[1.02] flex items-center justify-center gap-3">
+                            <i class="bi bi-hand-index-thumb-fill text-lg"></i>
+                            <span>INITIATE HANDSHAKE</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-16 bg-black border-t border-white/5 text-center">
+        <p class="mono text-[10px] text-zinc-600 uppercase tracking-[0.5em]">© 2026 Abdulla Safwan K // Python Developer
+            v13.0 // Kerala, India</p>
+    </footer>
+
+    <!-- Connect Session Modal -->
+    <div id="contact-modal"
+        class="fixed inset-0 z-[9999] hidden flex items-center justify-center bg-black/90 backdrop-blur-md transition-opacity duration-300 opacity-0 pointer-events-none">
+        <div class="bg-black/80 border border-blue-500/30 p-8 rounded-3xl w-full max-w-lg shadow-2xl shadow-blue-500/20 relative transform scale-95 transition-transform duration-300"
+            id="modal-panel">
+
+            <!-- Close Button -->
+            <button onclick="closeContactModal()"
+                class="absolute top-6 right-6 text-zinc-500 hover:text-white transition-colors">
+                <i class="bi bi-x-lg text-lg"></i>
+            </button>
+
+            <!-- Header -->
+            <div class="mb-8 border-b border-white/5 pb-4">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                    <span class="mono text-[10px] text-blue-500 uppercase tracking-widest font-bold">Secure Channel //
+                        Encrypted</span>
+                </div>
+                <h3 class="text-3xl font-black italic text-white uppercase tracking-tighter">Initialize Session.</h3>
+            </div>
+
+            <!-- Form -->
+            <div class="space-y-6">
+                <div>
+                    <label class="block mono text-[10px] text-zinc-500 mb-2 uppercase tracking-widest">Protocol Header
+                        (Subject)</label>
+                    <input id="email-subject" type="text" placeholder="Project Inquiry / Collaboration"
+                        class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:border-blue-500/50 focus:bg-blue-500/5 outline-none transition-all duration-300 placeholder:text-zinc-600">
+                </div>
+
+                <div>
+                    <label class="block mono text-[10px] text-zinc-500 mb-2 uppercase tracking-widest">Data Packet
+                        (Message)</label>
+                    <textarea id="email-body" rows="5" placeholder="Enter your transmission data..."
+                        class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:border-blue-500/50 focus:bg-blue-500/5 outline-none transition-all duration-300 placeholder:text-zinc-600 resize-none"></textarea>
+                </div>
+
+                <div class="flex gap-4 pt-4">
+                    <button onclick="closeContactModal()"
+                        class="flex-1 py-4 rounded-xl border border-white/10 text-zinc-400 text-xs font-bold uppercase tracking-widest hover:bg-white/5 hover:text-white transition-all duration-300">
+                        Terminate
+                    </button>
+                    <button onclick="sendEmail()"
+                        class="flex-[2] py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-xs font-black rounded-xl hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300 uppercase tracking-widest glow-button">
+                        Transmit Data
+                    </button>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="mt-6 text-center">
+                <p class="mono text-[10px] text-zinc-700 uppercase">Session ID: <span
+                        class="text-zinc-500">8492-AX-99</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom JS -->
+    <script src="js/script.js"></script>
+</body>
+
+</html>
